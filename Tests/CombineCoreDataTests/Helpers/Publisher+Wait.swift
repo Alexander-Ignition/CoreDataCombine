@@ -56,7 +56,7 @@ public struct PublisherResult<Output, Failure> where Failure: Error {
 
     /// Сheck that the result was completed successfully with a single value.
     ///
-    ///     try Jsut(4).wait().single() // 4
+    ///     try Just(4).wait().single() // 4
     ///     try Empty<Int, Never>().wait().single() // assert fail and error
     ///     try [1, 2, 3].publisher.wait().single() // assert fail
     ///

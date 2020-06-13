@@ -23,7 +23,7 @@ final class SchedulerTests: TestCase {
         XCTAssertNoThrow(try saveBooks())
 
         let context = try Just(Book.all)
-            .eraseToAnyPublisher() // because `Just` has two methods `tryMap`
+            .eraseToAnyPublisher()
             .tryMap { try $0.execute().first?.managedObjectContext }
             .subscribe(on: backgroundContext)
             .wait()
@@ -36,6 +36,7 @@ final class SchedulerTests: TestCase {
         XCTAssertNoThrow(try saveBooks())
 
         let context = try Just(Book.all)
+            .eraseToAnyPublisher()
             .receive(on: backgroundContext)
             .tryMap { try $0.execute().first?.managedObjectContext }
             .wait()
