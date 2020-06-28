@@ -1,4 +1,4 @@
-import CoreData
+import Books
 import XCTest
 
 class TestCase: XCTestCase {

@@ -20,8 +20,11 @@ let package = Package(
         .target(
             name: "CombineCoreData",
             dependencies: []),
+        .target(
+            name: "Books",
+            dependencies: ["CombineCoreData"]),
         .testTarget(
             name: "CombineCoreDataTests",
-            dependencies: ["CombineCoreData"]),
+            dependencies: ["CombineCoreData", "Books"]),
     ]
 )

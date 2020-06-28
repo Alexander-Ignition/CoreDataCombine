@@ -1,6 +1,5 @@
+import Books
 import Combine
-import CoreData
-import CombineCoreData
 import XCTest
 
 final class SchedulerTests: TestCase {
