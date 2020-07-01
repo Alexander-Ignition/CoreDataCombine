@@ -3,10 +3,10 @@
 [![SPM compatible](https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
 [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/Alexander-Ignition/OSLogging/blob/master/LICENSE)
 
+> Inspired by [ReactiveCocoa and Core Data Concurrency](https://thoughtbot.com/blog/reactive-core-data)
+
 - You will no longer need to use method `perform(_:)` directly with `do catch`.
 - You can forget about the callback based api when working with CoreData.
-
-> Inspired by [ReactiveCocoa and Core Data Concurrency](https://thoughtbot.com/blog/reactive-core-data)
 
 ## Features
 
@@ -30,16 +30,21 @@ Add dependency to `Package.swift`...
 
 ## Usage
 
-`import CombineCoreData`
-
 Wrap any operation with managed objects in context with method `publisher(_:)`.
 
-> Full examples you can see in *Sources/Books*
+```swift
+import CombineCoreData
 
+managedObjectContext.publisher {
+    // do something
+}
+```
+
+Full examples you can see in [Sources/Books](Sources/Books). This module contains [Book](Sources/Books/Book.swift) and [BookStorage](Sources/Books/BookStorage.swift) that manages books.
 
 ### Save objects
 
-Example save books in `backgroundContex`  on background queue.
+Example of asynchronously saving books in а `backgroundContex` on its private queue.
 
 ```swift
 func saveBooks(names: [String]) -> AnyPublisher<Void, Error> {
@@ -55,7 +60,7 @@ func saveBooks(names: [String]) -> AnyPublisher<Void, Error> {
 
 ### Fetch objects
 
-Fetch books in `backgroundContex` on background queue.
+Example of asynchronously fetching books in а `backgroundContex` on its private queue.
 
 ```swift
 func fetchBooks() -> AnyPublisher<[Book], Error> {
@@ -63,40 +68,20 @@ func fetchBooks() -> AnyPublisher<[Book], Error> {
 }
 ```
 
-##  Scheduler
+## Scheduler
 
-Many types adopts protocol `Scheduler`, like a `DispatchQueue`, `OperationQueue` and `RunLoop`.
-
-`NSManagedObjectContext` has private queue and schedule task throuth method `perform(_:)`.
-
-Combine provides several schedulers like a DispatchQueue, OperationQueue, RunLoop,  
+You can use `NSManagedObjectContext` instead of `OperationQeue`, `DispatchQueue` or `RunLoop` with operators `receive(on:)` and `subscribe(on:)`
 
 ```swift
-import Combine
-import CoreData
-import CombineCoreData
-
-let subscription = Deferred {
-    // Write `Book` on background thread in `backgroundContext`
-    Result<NSManagedObjectID, Error> {
-        let book = Book(context: self.backgroundContext)
-        book.name = "CoreData"
-        try self.backgroundContext.save()
-        return book.objectID
-    }.publisher
-}
-.subscribe(on: backgroundContext)
-.receive(on: viewContext)
-.map { (id: NSManagedObjectID) -> Book in
-    // Read `Book` on main thread in `viewContext`.
-    return self.viewContext.object(with: id) as! Book
-}
-.sink(
-    receiveCompletion: { completion in
+let subscription = itemService.load()
+    .receive(on: viewContext)
+    .sink(receiveCompletion: { completion in
+        // Receive `completion` on main queue in `viewContext`
         print(completion)
-    },
-    receiveValue: { (book: Book) in
-        // Receive `Book` on main thread in `viewContext`
+    }, receiveValue: { (items: [Item]) in
+        // Receive `[Item]` on main queue in `viewContext`
         print(book)
     })
 ```
+
+`CombineCoreData` extends `NSManagedObjectContext` to adapt the `Scheduler` protocol. Because `NSManagedObjectContext` has a private queue and and schedule task through method `perform(_:)`.
