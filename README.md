@@ -10,8 +10,8 @@
 
 ## Features
 
-- [x] NSManagedObjectContexts produce Publisher
-- [x] NSManagedObjectContexts + Scheduler
+- [x] NSManagedObjectContext produce Publisher
+- [x] NSManagedObjectContext + Scheduler
 
 
 ## Instalation
