@@ -1,15 +1,13 @@
 name: Test
 on:
-  # Trigger the workflow on push or pull request,
-  # for all branches, but never trigger on new tags
   push:
     branches:
-      - '**'
+      - master
     tags-ignore:
       - '**'
   pull_request:
     branches:
-      - '**'
+      - '*'
 
 jobs:
   test:
