@@ -1,7 +1,8 @@
 # 🚜 CombineCoreData 🗄
 
 [![SPM compatible](https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
-[![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/Alexander-Ignition/OSLogging/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/Alexander-Ignition/CombineCoreData/blob/master/LICENSE)
+[![GitHub Workflow Test](https://github.com/Alexander-Ignition/CombineCoreData/workflows/Test/badge.svg)](https://github.com/Alexander-Ignition/CombineCoreData/actions?query=workflow%3ATest)
 
 > Inspired by [ReactiveCocoa and Core Data Concurrency](https://thoughtbot.com/blog/reactive-core-data)
 
